@@ -9,23 +9,24 @@ import UIKit
 
 class MovieListViewController: UIViewController {
     // MARK: - Outlets
-    @IBOutlet weak var tableView: UITableView!
+    @IBOutlet weak var collectionView: UICollectionView!
     
     
     // MARK: - Properties
     private var movies: [Movie] = []
-    
     private let queryService = QueryService()
+    
+//    private let itemsPerRow: CGFloat = 3
+//    private let sectionInsets = UIEdgeInsets(top: 50.0, left: 10.0, bottom: 50.0, right: 20.0)
     
     
     // MARK: - View Life Cycle
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        // Setup Table View
-        tableView.dataSource = self
-        tableView.delegate = self
-        tableView.tableFooterView = UIView()
+        // Setup Collection View
+        collectionView.dataSource = self
+        collectionView.delegate = self
         
         
         getAllMovies()
@@ -43,7 +44,7 @@ class MovieListViewController: UIViewController {
                 self?.movies = receivedMovies
                 
                 DispatchQueue.main.async {
-                    self?.tableView.reloadData()
+                    self?.collectionView.reloadData()
                 }
             }
         })
@@ -52,32 +53,39 @@ class MovieListViewController: UIViewController {
 }
 
 
-// MARK: - UITableViewDataSource
-extension MovieListViewController: UITableViewDataSource {
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+// MARK: - UICollectionViewDataSource
+extension MovieListViewController: UICollectionViewDataSource {
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return movies.count
     }
     
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: Identifier.Cell.movieCell, for: indexPath)
-        
-        let movie = movies[indexPath.row]
-        
-        cell.textLabel?.text = movie.title
-        
-        
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: Identifier.Cell.movieCell, for: indexPath)
+        cell.backgroundColor = .blue
         return cell
     }
-    
-    
 }
 
 
-// MARK: - UITableViewDelegate
-extension MovieListViewController: UITableViewDelegate {
-    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        print(movies[indexPath.row])
-        tableView.deselectRow(at: indexPath, animated: true)
+// MARK: - UICollectionViewDelegateFlowLayout
+extension MovieListViewController: UICollectionViewDelegateFlowLayout {
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        
+        let leftSectionInsets: CGFloat = 8
+        let itemsPerRow: CGFloat = 3
+        
+        let paddingSpace = leftSectionInsets * (itemsPerRow + 1)
+        let availableWidth = view.frame.width - paddingSpace
+        let widthPerItem = availableWidth / itemsPerRow
+        
+        return CGSize(width: widthPerItem, height: widthPerItem)
     }
 }
 
+
+extension MovieListViewController: UICollectionViewDelegate {
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        print(movies[indexPath.row])
+        collectionView.deselectItem(at: indexPath, animated: true)
+    }
+}

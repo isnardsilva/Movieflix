@@ -15,4 +15,5 @@ Projeto criado com o intuito de aperfeiçoar as habilidades em:
 - [ ] Implementar o Coordinator
 - [ ] Implementar MVVM
 - [ ] Trocar a exibição de Table View para Collection View
+- [ ] Usar Swift Lint
 - [ ] Retirar a Key antes de tornar o repositório público

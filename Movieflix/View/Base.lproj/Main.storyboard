@@ -57,6 +57,9 @@
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" title="Movieflix" id="Jpe-yo-Dr2"/>
+                    <connections>
+                        <outlet property="tableView" destination="QYM-fU-eII" id="Cc9-Ok-VXB"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>

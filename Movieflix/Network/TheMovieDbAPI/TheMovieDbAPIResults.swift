@@ -7,12 +7,12 @@
 
 import Foundation
 
-struct APIResults: Codable {
+struct TheMovieDbAPIResults: Codable {
     let page: Int
-    let results: [Movie]
+    let movies: [Movie]
     
     enum CodingKeys: String, CodingKey {
-//        case userID = "userId"
-        case page, results
+        case page
+        case movies = "results"
     }
 }

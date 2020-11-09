@@ -11,14 +11,8 @@ class MovieListViewController: UIViewController {
     // MARK: - Outlets
     @IBOutlet weak var collectionView: UICollectionView!
     
-    
     // MARK: - Properties
     private var movies: [Movie] = []
-    private let queryService = QueryService()
-    
-//    private let itemsPerRow: CGFloat = 3
-//    private let sectionInsets = UIEdgeInsets(top: 50.0, left: 10.0, bottom: 50.0, right: 20.0)
-    
     
     // MARK: - View Life Cycle
     override func viewDidLoad() {
@@ -28,19 +22,17 @@ class MovieListViewController: UIViewController {
         collectionView.dataSource = self
         collectionView.delegate = self
         
-        
         getAllMovies()
     }
         
     
     private func getAllMovies() {
-        queryService.getRequest(completion: { [weak self] results, error in
-            if error != nil {
-                print(error!)
-                return
-            }
-            
-            if let receivedMovies = results {
+        let moviesAPI = MoviesAPI()
+        moviesAPI.fetchMovies(completionHandler: { [weak self] result in
+            switch result {
+            case .failure(let error):
+                print(error)
+            case .success(let receivedMovies):
                 self?.movies = receivedMovies
                 
                 DispatchQueue.main.async {

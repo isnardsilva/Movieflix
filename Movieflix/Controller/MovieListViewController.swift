@@ -11,8 +11,14 @@ class MovieListViewController: UIViewController {
     // MARK: - Outlets
     @IBOutlet weak var collectionView: UICollectionView!
     
+    
     // MARK: - Properties
-    private var movies: [Movie] = []
+    private lazy var viewModel: MovieListViewModel = { [weak self] in
+        let viewModel = MovieListViewModel()
+        viewModel.delegate = self
+        return viewModel
+    }()
+    
     
     // MARK: - View Life Cycle
     override func viewDidLoad() {
@@ -22,33 +28,32 @@ class MovieListViewController: UIViewController {
         collectionView.dataSource = self
         collectionView.delegate = self
         
-        getAllMovies()
+        // Fetch Movies
+        viewModel.fetchTrendingMovies()
     }
-        
-    
-    private func getAllMovies() {
-        let moviesAPI = MoviesAPI()
-        moviesAPI.fetchMovies(completionHandler: { [weak self] result in
-            switch result {
-            case .failure(let error):
-                print(error)
-            case .success(let receivedMovies):
-                self?.movies = receivedMovies
-                
-                DispatchQueue.main.async {
-                    self?.collectionView.reloadData()
-                }
-            }
-        })
-    }
+}
 
+
+// MARK: - MovieListViewModelDelegate
+extension MovieListViewController: MovieListViewModelDelegate {
+    func didReceiveBreaches() {
+        DispatchQueue.main.async { [weak self] in
+            self?.collectionView.reloadData()
+        }
+    }
+    
+    func didReceiveError() {
+        // TODO: Handle Errors
+    }
+    
+    
 }
 
 
 // MARK: - UICollectionViewDataSource
 extension MovieListViewController: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return movies.count
+        return viewModel.movies.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
@@ -75,9 +80,10 @@ extension MovieListViewController: UICollectionViewDelegateFlowLayout {
 }
 
 
+// MARK: - UICollectionViewDelegate
 extension MovieListViewController: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        print(movies[indexPath.row])
+        print(viewModel.movies[indexPath.row])
         collectionView.deselectItem(at: indexPath, animated: true)
     }
 }

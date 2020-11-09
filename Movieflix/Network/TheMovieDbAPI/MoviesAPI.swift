@@ -19,7 +19,7 @@ class MoviesAPI {
     
     
     // MARK: - Fetch Methods
-    func fetchMovies(completionHandler: @escaping (Result<[Movie], Error>) -> Void) {
+    func fetchTrendingMovies(completionHandler: @escaping (Result<[Movie], Error>) -> Void) {
         let baseURL = TheMovieDbAPISources.baseURL
         let trendingMoviesExtensionURL = TheMovieDbAPISources.trendingMoviesExtensionURL
         

@@ -17,6 +17,7 @@ struct Movie: Codable {
     let originalTitle: String
     let adult: Bool
     let overview: String
+    let backdropPath: String
     let posterPath: String
     var favorite: Bool = false
     
@@ -27,6 +28,7 @@ struct Movie: Codable {
         case releaseDate = "release_date"
         case originalLanguage = "original_language"
         case originalTitle = "original_title"
+        case backdropPath = "backdrop_path"
         case posterPath = "poster_path"
     }
 }

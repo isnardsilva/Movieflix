@@ -12,6 +12,9 @@ enum TheMovieDbAPISources {
     static let trendingMoviesExtensionURL = "/trending/movie/day"
     static let APIKey: String = "3b6f1093e617eedbaa21c5937c0ae3b3"
     
+    static let thumbnailBaseURL = "https://image.tmdb.org/t/p/w200"
+    static let backdropBaseURL = "https://image.tmdb.org/t/p/w500"
+    
     enum ParameterName {
         static let APIKey = "api_key"
         static let limit = "limit"

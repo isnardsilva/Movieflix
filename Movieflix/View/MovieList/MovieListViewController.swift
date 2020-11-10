@@ -8,8 +8,8 @@
 import UIKit
 
 class MovieListViewController: UIViewController {
-    // MARK: - Outlets
-    @IBOutlet weak var collectionView: UICollectionView!
+    // MARK: - Views
+    private var baseView: MovieListView!
     
     
     // MARK: - Properties
@@ -19,14 +19,28 @@ class MovieListViewController: UIViewController {
         return viewModel
     }()
     
+    weak var coordinator: MainCoordinator?
+    
     
     // MARK: - View Life Cycle
+    override func loadView() {
+        super.loadView()
+        
+        baseView = MovieListView()
+        self.view = baseView
+    }
+
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        // Setup Navigation Bar
+        navigationItem.title = "Movieflix"
+        
+        
         // Setup Collection View
-        collectionView.dataSource = self
-        collectionView.delegate = self
+        baseView.collectionView.dataSource = self
+        baseView.collectionView.delegate = self
+        
         
         // Fetch Movies
         viewModel.fetchTrendingMovies()
@@ -38,7 +52,7 @@ class MovieListViewController: UIViewController {
 extension MovieListViewController: MovieListViewModelDelegate {
     func didReceiveBreaches() {
         DispatchQueue.main.async { [weak self] in
-            self?.collectionView.reloadData()
+            self?.baseView.collectionView.reloadData()
         }
     }
     
@@ -57,8 +71,13 @@ extension MovieListViewController: UICollectionViewDataSource {
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: Identifier.Cell.movieCell, for: indexPath)
-        cell.backgroundColor = .blue
+        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: Identifier.Cell.movieCell, for: indexPath) as? MovieCell else {
+            return UICollectionViewCell()
+        }
+        
+        let movieViewModel = MovieViewModel(movie: viewModel.movies[indexPath.row])
+        cell.movieViewModel = movieViewModel
+        
         return cell
     }
 }
@@ -68,14 +87,18 @@ extension MovieListViewController: UICollectionViewDataSource {
 extension MovieListViewController: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         
-        let leftSectionInsets: CGFloat = 8
+        let leftSectionInsets: CGFloat = 5
         let itemsPerRow: CGFloat = 3
         
         let paddingSpace = leftSectionInsets * (itemsPerRow + 1)
-        let availableWidth = view.frame.width - paddingSpace
+        let availableWidth = collectionView.frame.width - paddingSpace
         let widthPerItem = availableWidth / itemsPerRow
         
-        return CGSize(width: widthPerItem, height: widthPerItem)
+        return CGSize(width: widthPerItem, height: widthPerItem + 50)
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
+        return UIEdgeInsets(top: 8, left: 0, bottom: 0, right: 0)
     }
 }
 

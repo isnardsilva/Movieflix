@@ -25,3 +25,11 @@ class MainCoordinator: Coordinator {
         navigationController.pushViewController(movieListViewController, animated: false)
     }
 }
+
+extension MainCoordinator {
+    func navigateToMovieDetailViewController(movie: Movie) {
+        let movieDetailViewController = MovieDetailViewController(movie: movie)
+        movieDetailViewController.coordinator = self
+        navigationController.pushViewController(movieDetailViewController, animated: true)
+    }
+}

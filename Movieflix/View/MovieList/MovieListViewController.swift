@@ -9,7 +9,7 @@ import UIKit
 
 class MovieListViewController: UIViewController {
     // MARK: - Views
-    private var baseView: MovieListView!
+    private var baseView = MovieListView()
     
     
     // MARK: - Properties
@@ -25,8 +25,6 @@ class MovieListViewController: UIViewController {
     // MARK: - View Life Cycle
     override func loadView() {
         super.loadView()
-        
-        baseView = MovieListView()
         self.view = baseView
     }
 
@@ -106,7 +104,8 @@ extension MovieListViewController: UICollectionViewDelegateFlowLayout {
 // MARK: - UICollectionViewDelegate
 extension MovieListViewController: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        print(viewModel.movies[indexPath.row])
+        let touchedMovie = viewModel.movies[indexPath.row]
+        coordinator?.navigateToMovieDetailViewController(movie: touchedMovie)
         collectionView.deselectItem(at: indexPath, animated: true)
     }
 }

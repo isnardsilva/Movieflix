@@ -31,6 +31,7 @@ class MovieListView: UIView {
 }
 
 
+// MARK: - ViewCodable
 extension MovieListView: ViewCodable {
     func setupViewHierarchy() {
         addSubview(collectionView)

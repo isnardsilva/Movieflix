@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 50;
+	objectVersion = 51;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -281,7 +281,6 @@
 				7C613B1A6678ED68F52E1A39 /* Pods-Movieflix.debug.xcconfig */,
 				E61513DEDBE0756EB3A25627 /* Pods-Movieflix.release.xcconfig */,
 			);
-			name = Pods;
 			path = Pods;
 			sourceTree = "<group>";
 		};

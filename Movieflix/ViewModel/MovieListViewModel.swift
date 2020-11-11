@@ -24,8 +24,12 @@ class MovieListViewModel {
     
     
     // MARK: - Initialization
-    init(networkManager: NetworkManager = NetworkManager.shared) {
-        self.moviesAPI = MoviesAPI(networkManager: networkManager)
+    init(movies: [Movie]? = nil) {
+        if let inputMovies = movies {
+            self.movies = inputMovies
+        }
+        
+        self.moviesAPI = MoviesAPI()
     }
 }
 
@@ -47,7 +51,7 @@ extension MovieListViewModel {
     func searchMovieByName(_ movieName: String) {
         self.lastMovieNameSearched = movieName
         
-        moviesAPI.searchMovieByName(limit: 20, search: movieName, completionHandler: { [weak self] result in
+        moviesAPI.searchMovieByName(search: movieName, completionHandler: { [weak self] result in
             switch result {
             case .failure(let error):
                 self?.handleError(error: error)

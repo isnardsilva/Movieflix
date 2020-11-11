@@ -19,7 +19,6 @@ struct Movie: Codable {
     let overview: String
     let backdropPath: String?
     let posterPath: String?
-    var favorite: Bool = false
     
     // MARK: - Parse
     enum CodingKeys: String, CodingKey {

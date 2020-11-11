@@ -7,7 +7,7 @@
 
 import Foundation
 
-class NetworkManager {
+class NetworkManager: NetworkManagerProtocol {
     // MARK: - Singleton
     static let shared: NetworkManager = NetworkManager()
     
@@ -62,19 +62,6 @@ class NetworkManager {
                 completionHandler(.failure(detectedError))
                 return
             }
-            
-//            // Check Errors
-//            if let detectedError = error as NSError? {
-//                // Check is without Internet
-//                completionHandler(.failure(error))
-////                if detectedError.code == NSURLErrorNotConnectedToInternet {
-////                    completionHandler(.failure(HTTPError.notConnectedToInternet))
-////                } else {
-////                    completionHandler(.failure(HTTPError.unknown))
-////                }
-//
-//                return
-//            }
             
             // Handling the data
             guard let responseData = data,

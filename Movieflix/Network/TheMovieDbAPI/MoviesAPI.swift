@@ -9,11 +9,11 @@ import Foundation
 
 class MoviesAPI {
     // MARK: - Properties
-    private let networkManager: NetworkManager
+    private let networkManager: NetworkManagerProtocol
     
     
     // MARK: - Initialization
-    init(networkManager: NetworkManager = NetworkManager.shared) {
+    init(networkManager: NetworkManagerProtocol = NetworkManager.shared) {
         self.networkManager = networkManager
     }
     
@@ -45,7 +45,7 @@ class MoviesAPI {
         })
     }
     
-    func searchMovieByName(limit: Int, search: String, completionHandler: @escaping (Result<[Movie], Error>) -> Void) {
+    func searchMovieByName(search: String, completionHandler: @escaping (Result<[Movie], Error>) -> Void) {
         let baseURL = TheMovieDbAPISources.baseURL
         let searchMoviesExtensionURL = TheMovieDbAPISources.searchMoviesExtensionURL
         

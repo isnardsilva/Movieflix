@@ -44,4 +44,31 @@ class MoviesAPI {
             
         })
     }
+    
+    func searchMovieByName(limit: Int, search: String, completionHandler: @escaping (Result<[Movie], Error>) -> Void) {
+        let baseURL = TheMovieDbAPISources.baseURL
+        let searchMoviesExtensionURL = TheMovieDbAPISources.searchMoviesExtensionURL
+        
+        let parameters: [String: String] = [
+            TheMovieDbAPISources.ParameterName.query: search,
+            TheMovieDbAPISources.ParameterName.APIKey: TheMovieDbAPISources.APIKey
+        ]
+        
+        networkManager.get(baseURL: baseURL + searchMoviesExtensionURL, parameters: parameters, completionHandler: { result in
+            
+            switch result {
+            case .failure(let error):
+                completionHandler(.failure(error))
+                
+            case .success(let data):
+                do {
+                    let results = try JSONDecoder().decode(TheMovieDbAPIResults.self, from: data)
+                    completionHandler(.success(results.movies))
+                } catch {
+                    completionHandler(.failure(error))
+                }
+            }
+            
+        })
+    }
 }

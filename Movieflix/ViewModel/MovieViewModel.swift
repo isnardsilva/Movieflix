@@ -25,12 +25,19 @@ class MovieViewModel {
     }
     
     var thumbnailPath: URL? {
-        let urlString = TheMovieDbAPISources.thumbnailBaseURL + movie.posterPath
+        guard let strPosterPath = movie.posterPath else {
+            return nil
+        }
+        let urlString = TheMovieDbAPISources.thumbnailBaseURL + strPosterPath
         return URL(string: urlString)
     }
     
     var backdropPath: URL? {
-        let urlString = TheMovieDbAPISources.backdropBaseURL + movie.backdropPath
+        guard let strBackdropPath = movie.backdropPath else {
+            return nil
+        }
+        
+        let urlString = TheMovieDbAPISources.backdropBaseURL + strBackdropPath
         return URL(string: urlString)
     }
     

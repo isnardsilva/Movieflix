@@ -33,12 +33,18 @@ class MovieListViewController: UIViewController {
         
         // Setup Navigation Bar
         navigationItem.title = "Movieflix"
+        navigationItem.hidesSearchBarWhenScrolling = false
         
         
         // Setup Collection View
         baseView.collectionView.dataSource = self
         baseView.collectionView.delegate = self
         
+        // Setup Search Controller
+        setupSearchController()
+        
+        // Show loading
+        baseView.activityIndicatorView.startAnimating()
         
         // Fetch Movies
         viewModel.fetchTrendingMovies()
@@ -56,17 +62,27 @@ class MovieListViewController: UIViewController {
         baseView.collectionView.isHidden = false
         baseView.messageLabel.isHidden = true
     }
+    
+    func setupSearchController() {
+        baseView.searchController.searchBar.delegate = self
+        baseView.searchController.obscuresBackgroundDuringPresentation = false
+        baseView.searchController.searchBar.placeholder = "Search Movies"
+        navigationItem.searchController = baseView.searchController
+        definesPresentationContext = true
+    }
 }
 
 
 // MARK: - MovieListViewModelDelegate
 extension MovieListViewController: MovieListViewModelDelegate {
     
-    func didReceiveBreaches() {
+    func didReceiveMovies() {
+        
         DispatchQueue.main.async { [unowned self] in
+            baseView.activityIndicatorView.stopAnimating()
+            
             if self.viewModel.movies.isEmpty {
-                let strSearch = "ABC"
-                self.showErrorMessage(message: "Não foi encontrado nenhum filme com o nome \"\(strSearch)\"")
+                self.showErrorMessage(message: "Não foi encontrado nenhum filme com o nome \"\(viewModel.lastMovieNameSearched)\"")
             } else {
                 DispatchQueue.main.async { [weak self] in
                     self?.showContent()
@@ -77,6 +93,8 @@ extension MovieListViewController: MovieListViewModelDelegate {
     }
     
     func didReceiveError(error: Error) {
+        print(error)
+        
         DispatchQueue.main.async { [weak self] in
             if let detectedError = error as NSError?, detectedError.code == NSURLErrorNotConnectedToInternet {
                 self?.showErrorMessage(message: "Sem conexão com a internet!")
@@ -85,8 +103,16 @@ extension MovieListViewController: MovieListViewModelDelegate {
             }
         }
     }
-    
-    
+}
+
+extension MovieListViewController: UISearchBarDelegate {
+    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
+        guard let movieName = searchBar.text, !movieName.isEmpty else {
+            return
+        }
+        
+        viewModel.searchMovieByName(movieName)
+    }
 }
 
 

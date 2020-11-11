@@ -12,11 +12,11 @@ class NetworkManager {
     static let shared: NetworkManager = NetworkManager()
     
     // MARK: - Properties
+    private var dataTask: URLSessionDataTask?
+    
     enum HTTPError: Error {
-        case notConnectedToInternet
         case invalidURL
         case invalidResponse(Data?, URLResponse?)
-        case unknown
     }
     
     // MARK: - Initialization
@@ -26,6 +26,7 @@ class NetworkManager {
     // MARK: - Internal Methods
     func get(baseURL: String, parameters: [String: String]?, completionHandler: @escaping (Result<Data, Error>) -> Void) {
         
+        dataTask?.cancel()
         
         // Format URL
         guard var urlComponents = URLComponents(string: baseURL) else {
@@ -50,20 +51,30 @@ class NetworkManager {
             return
         }
         
-        
         // Request
-        let task = URLSession.shared.dataTask(with: url, completionHandler: { data, response, error in
-            // Check Errors
-            if let detectedError = error as NSError? {
-                // Check is without Internet
-                if detectedError.code == NSURLErrorNotConnectedToInternet {
-                    completionHandler(.failure(HTTPError.notConnectedToInternet))
-                } else {
-                    completionHandler(.failure(HTTPError.unknown))
-                }
-                
+        dataTask = URLSession.shared.dataTask(with: url, completionHandler: { [weak self] data, response, error in
+            
+            defer {
+                self?.dataTask = nil
+            }
+            
+            if let detectedError = error {
+                completionHandler(.failure(detectedError))
                 return
             }
+            
+//            // Check Errors
+//            if let detectedError = error as NSError? {
+//                // Check is without Internet
+//                completionHandler(.failure(error))
+////                if detectedError.code == NSURLErrorNotConnectedToInternet {
+////                    completionHandler(.failure(HTTPError.notConnectedToInternet))
+////                } else {
+////                    completionHandler(.failure(HTTPError.unknown))
+////                }
+//
+//                return
+//            }
             
             // Handling the data
             guard let responseData = data,
@@ -77,6 +88,6 @@ class NetworkManager {
             completionHandler(.success(responseData))
         })
         
-        task.resume()
+        dataTask?.resume()
     }
 }

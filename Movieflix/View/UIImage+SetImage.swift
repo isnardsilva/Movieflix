@@ -10,8 +10,14 @@ import Kingfisher
 
 extension UIImageView {
     func setImage(url: URL?) {
-        self.kf.indicatorType = .activity
-        self.kf.setImage(with: url)
+        if url == nil {
+            self.image = UIImage(systemName: "photo")
+            self.contentMode = .scaleAspectFit
+            return
+        } else {
+            self.kf.indicatorType = .activity
+            self.kf.setImage(with: url)
+        }
     }
 }
 

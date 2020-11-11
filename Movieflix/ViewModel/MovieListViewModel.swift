@@ -8,7 +8,7 @@
 import Foundation
 
 protocol MovieListViewModelDelegate: class {
-    func didReceiveBreaches()
+    func didReceiveMovies()
     func didReceiveError(error: Error)
 }
 
@@ -18,6 +18,8 @@ class MovieListViewModel {
     weak var delegate: MovieListViewModelDelegate?
     
     private(set) var movies: [Movie] = []
+    
+    var lastMovieNameSearched = String()
     
     
     
@@ -42,9 +44,23 @@ extension MovieListViewModel {
         })
     }
     
+    func searchMovieByName(_ movieName: String) {
+        self.lastMovieNameSearched = movieName
+        
+        moviesAPI.searchMovieByName(limit: 20, search: movieName, completionHandler: { [weak self] result in
+            switch result {
+            case .failure(let error):
+                self?.handleError(error: error)
+                
+            case .success(let receivedMovies):
+                self?.handleSucess(with: receivedMovies)
+            }
+        })
+    }
+    
     private func handleSucess(with movies: [Movie]) {
         self.movies = movies
-        delegate?.didReceiveBreaches()
+        delegate?.didReceiveMovies()
     }
     
     private func handleError(error: Error) {

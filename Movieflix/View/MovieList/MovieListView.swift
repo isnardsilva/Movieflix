@@ -23,9 +23,19 @@ class MovieListView: UIView {
         collectionView.register(MovieCell.self, forCellWithReuseIdentifier: Identifier.Cell.movieCell)
         collectionView.backgroundColor = .systemBackground
         collectionView.showsVerticalScrollIndicator = false
-//        collectionView.isHidden = true
         collectionView.translatesAutoresizingMaskIntoConstraints = false
         return collectionView
+    }()
+    
+    lazy var searchController: UISearchController = {
+        let searchController = UISearchController()
+        return searchController
+    }()
+    
+    let activityIndicatorView: UIActivityIndicatorView = {
+        let activityIndicator = UIActivityIndicatorView(style: .medium)
+        activityIndicator.translatesAutoresizingMaskIntoConstraints = false
+        return activityIndicator
     }()
     
     // MARK: - Initialization
@@ -45,6 +55,7 @@ extension MovieListView: ViewCodable {
     func setupViewHierarchy() {
         addSubview(collectionView)
         addSubview(messageLabel)
+        addSubview(activityIndicatorView)
     }
     
     func setupConstraints() {
@@ -59,6 +70,11 @@ extension MovieListView: ViewCodable {
             messageLabel.centerYAnchor.constraint(equalTo: self.centerYAnchor),
             messageLabel.centerXAnchor.constraint(equalTo: self.centerXAnchor),
             messageLabel.widthAnchor.constraint(equalTo: self.widthAnchor, multiplier: 0.7)
+        ])
+        
+        NSLayoutConstraint.activate([
+            activityIndicatorView.centerYAnchor.constraint(equalTo: self.centerYAnchor),
+            activityIndicatorView.centerXAnchor.constraint(equalTo: self.centerXAnchor)
         ])
     }
     

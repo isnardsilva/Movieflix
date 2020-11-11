@@ -17,8 +17,8 @@ struct Movie: Codable {
     let originalTitle: String
     let adult: Bool
     let overview: String
-    let backdropPath: String
-    let posterPath: String
+    let backdropPath: String?
+    let posterPath: String?
     var favorite: Bool = false
     
     // MARK: - Parse

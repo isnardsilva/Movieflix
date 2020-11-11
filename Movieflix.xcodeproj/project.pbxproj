@@ -131,13 +131,13 @@
 			isa = PBXGroup;
 			children = (
 				040B750C255C498700CD94D1 /* AppDelegate */,
-				040B750F255C49F900CD94D1 /* Coordinator */,
-				040B7513255C4A0100CD94D1 /* Model */,
-				040B7517255C4A0700CD94D1 /* Network */,
 				040B7522255C4A0E00CD94D1 /* Protocols */,
+				040B750F255C49F900CD94D1 /* Coordinator */,
+				040B7517255C4A0700CD94D1 /* Network */,
+				040B7513255C4A0100CD94D1 /* Model */,
 				040B752F255C4A3100CD94D1 /* ViewModel */,
-				040B752A255C4A1500CD94D1 /* Sources */,
 				040B7535255C4A5400CD94D1 /* View */,
+				040B752A255C4A1500CD94D1 /* Sources */,
 				040B74FF255C493200CD94D1 /* Assets.xcassets */,
 				040B7504255C493200CD94D1 /* Info.plist */,
 			);
@@ -182,8 +182,8 @@
 			isa = PBXGroup;
 			children = (
 				040B751A255C4A0800CD94D1 /* TheMovieDbAPISources.swift */,
-				040B751B255C4A0800CD94D1 /* MoviesAPI.swift */,
 				040B751C255C4A0800CD94D1 /* TheMovieDbAPIResults.swift */,
+				040B751B255C4A0800CD94D1 /* MoviesAPI.swift */,
 			);
 			path = TheMovieDbAPI;
 			sourceTree = "<group>";

@@ -82,7 +82,7 @@ extension MovieListViewController: MovieListViewModelDelegate {
             baseView.activityIndicatorView.stopAnimating()
             
             if self.viewModel.movies.isEmpty {
-                self.showErrorMessage(message: "Não foi encontrado nenhum filme com o nome \"\(viewModel.lastMovieNameSearched)\"")
+                self.showErrorMessage(message: "No movies were found with the name \"\(viewModel.lastMovieNameSearched)\"")
             } else {
                 DispatchQueue.main.async { [weak self] in
                     self?.showContent()
@@ -97,9 +97,9 @@ extension MovieListViewController: MovieListViewModelDelegate {
         
         DispatchQueue.main.async { [weak self] in
             if let detectedError = error as NSError?, detectedError.code == NSURLErrorNotConnectedToInternet {
-                self?.showErrorMessage(message: "Sem conexão com a internet!")
+                self?.showErrorMessage(message: "No internet connection!")
             } else {
-                self?.showErrorMessage(message: "Ocorreu um errro! Tente novamente mais tarde!")
+                self?.showErrorMessage(message: "An error has occurred! Try again later!")
             }
         }
     }

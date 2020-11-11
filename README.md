@@ -13,6 +13,7 @@ Projeto criado com o intuito de aperfeiçoar as habilidades em:
 
 ### Requisitos
 - Xcode 12+
+- Cocoa Pods
 - [Key](https://developers.themoviedb.org/3/getting-started/introduction) no site 
 [The Movie Database (TMDb)](https://www.themoviedb.org) para poder ter acesso aos dados da API
 

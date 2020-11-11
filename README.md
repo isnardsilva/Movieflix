@@ -28,7 +28,7 @@ Projeto criado com o intuito de aperfeiçoar as habilidades em:
 
 
 ### O que é?
-- Aplicativo que exibe uma série de filmes provenientes da API do [The Movie Database (TMDb)](https://www.themoviedb.org).
+- Aplicativo que exibe filmes provenientes da API do [The Movie Database (TMDb)](https://www.themoviedb.org).
 
 
 ### Requisitos

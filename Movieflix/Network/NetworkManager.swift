@@ -13,8 +13,10 @@ class NetworkManager {
     
     // MARK: - Properties
     enum HTTPError: Error {
+        case notConnectedToInternet
         case invalidURL
         case invalidResponse(Data?, URLResponse?)
+        case unknown
     }
     
     // MARK: - Initialization
@@ -23,6 +25,8 @@ class NetworkManager {
     
     // MARK: - Internal Methods
     func get(baseURL: String, parameters: [String: String]?, completionHandler: @escaping (Result<Data, Error>) -> Void) {
+        
+        
         // Format URL
         guard var urlComponents = URLComponents(string: baseURL) else {
             completionHandler(.failure(HTTPError.invalidURL))
@@ -46,11 +50,18 @@ class NetworkManager {
             return
         }
         
+        
         // Request
         let task = URLSession.shared.dataTask(with: url, completionHandler: { data, response, error in
             // Check Errors
-            guard error == nil else {
-                completionHandler(.failure(error!))
+            if let detectedError = error as NSError? {
+                // Check is without Internet
+                if detectedError.code == NSURLErrorNotConnectedToInternet {
+                    completionHandler(.failure(HTTPError.notConnectedToInternet))
+                } else {
+                    completionHandler(.failure(HTTPError.unknown))
+                }
+                
                 return
             }
             

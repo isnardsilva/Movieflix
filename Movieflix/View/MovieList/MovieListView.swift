@@ -9,15 +9,24 @@ import UIKit
 
 class MovieListView: UIView {
     // MARK: - Views
+    let messageLabel: UILabel = {
+        let label = UILabel()
+        label.isHidden = true
+        label.numberOfLines = 0
+        label.textAlignment = .center
+        label.translatesAutoresizingMaskIntoConstraints = false
+        return label
+    }()
+    
     lazy var collectionView: UICollectionView = {
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewFlowLayout())
         collectionView.register(MovieCell.self, forCellWithReuseIdentifier: Identifier.Cell.movieCell)
         collectionView.backgroundColor = .systemBackground
         collectionView.showsVerticalScrollIndicator = false
+//        collectionView.isHidden = true
         collectionView.translatesAutoresizingMaskIntoConstraints = false
         return collectionView
     }()
-    
     
     // MARK: - Initialization
     init() {
@@ -35,6 +44,7 @@ class MovieListView: UIView {
 extension MovieListView: ViewCodable {
     func setupViewHierarchy() {
         addSubview(collectionView)
+        addSubview(messageLabel)
     }
     
     func setupConstraints() {
@@ -43,6 +53,12 @@ extension MovieListView: ViewCodable {
             collectionView.leadingAnchor.constraint(equalTo: self.layoutMarginsGuide.leadingAnchor),
             collectionView.trailingAnchor.constraint(equalTo: self.layoutMarginsGuide.trailingAnchor),
             collectionView.bottomAnchor.constraint(equalTo: self.bottomAnchor),
+        ])
+        
+        NSLayoutConstraint.activate([
+            messageLabel.centerYAnchor.constraint(equalTo: self.centerYAnchor),
+            messageLabel.centerXAnchor.constraint(equalTo: self.centerXAnchor),
+            messageLabel.widthAnchor.constraint(equalTo: self.widthAnchor, multiplier: 0.7)
         ])
     }
     

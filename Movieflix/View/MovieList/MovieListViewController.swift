@@ -43,19 +43,47 @@ class MovieListViewController: UIViewController {
         // Fetch Movies
         viewModel.fetchTrendingMovies()
     }
+    
+    
+    // MARK: - Private Methods
+    private func showErrorMessage(message: String) {
+        baseView.messageLabel.text = message
+        baseView.collectionView.isHidden = true
+        baseView.messageLabel.isHidden = false
+    }
+    
+    private func showContent() {
+        baseView.collectionView.isHidden = false
+        baseView.messageLabel.isHidden = true
+    }
 }
 
 
 // MARK: - MovieListViewModelDelegate
 extension MovieListViewController: MovieListViewModelDelegate {
+    
     func didReceiveBreaches() {
-        DispatchQueue.main.async { [weak self] in
-            self?.baseView.collectionView.reloadData()
+        DispatchQueue.main.async { [unowned self] in
+            if self.viewModel.movies.isEmpty {
+                let strSearch = "ABC"
+                self.showErrorMessage(message: "Não foi encontrado nenhum filme com o nome \"\(strSearch)\"")
+            } else {
+                DispatchQueue.main.async { [weak self] in
+                    self?.showContent()
+                    self?.baseView.collectionView.reloadData()
+                }
+            }
         }
     }
     
-    func didReceiveError() {
-        // TODO: Handle Errors
+    func didReceiveError(error: Error) {
+        DispatchQueue.main.async { [weak self] in
+            if let detectedError = error as NSError?, detectedError.code == NSURLErrorNotConnectedToInternet {
+                self?.showErrorMessage(message: "Sem conexão com a internet!")
+            } else {
+                self?.showErrorMessage(message: "Ocorreu um errro! Tente novamente mais tarde!")
+            }
+        }
     }
     
     

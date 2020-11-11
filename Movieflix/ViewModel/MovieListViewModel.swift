@@ -9,7 +9,7 @@ import Foundation
 
 protocol MovieListViewModelDelegate: class {
     func didReceiveBreaches()
-    func didReceiveError()
+    func didReceiveError(error: Error)
 }
 
 class MovieListViewModel {
@@ -18,6 +18,7 @@ class MovieListViewModel {
     weak var delegate: MovieListViewModelDelegate?
     
     private(set) var movies: [Movie] = []
+    
     
     
     // MARK: - Initialization
@@ -47,6 +48,6 @@ extension MovieListViewModel {
     }
     
     private func handleError(error: Error) {
-        delegate?.didReceiveError()
+        delegate?.didReceiveError(error: error)
     }
 }

@@ -18,8 +18,6 @@
   <img alt="Last Commit" src="https://img.shields.io/github/last-commit/isnardsilva/Movieflix">
 
   <img alt="Repo Size" src="https://img.shields.io/github/repo-size/isnardsilva/Movieflix">
-
-  <img alt="License" src="https://img.shields.io/github/license/isnardsilva/Movieflix">
 </p>
 
 Projeto criado com o intuito de aperfeiçoar as habilidades em:

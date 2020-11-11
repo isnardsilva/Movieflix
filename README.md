@@ -18,12 +18,12 @@ Projeto criado com o intuito de aperfeiçoar as habilidades em:
 
 
 ### Tasks
-- [ ] Implementar View Code
-- [ ] Implementar o Coordinator
-- [ ] Implementar MVVM
-- [ ] Trocar a exibição de Table View para Collection View
+- [x] Implementar View Code
+- [x] Implementar o Coordinator
+- [x] Implementar MVVM
+- [x] Trocar a exibição de Table View para Collection View
 - [ ] Usar Swift Lint
-- [ ] Fazer o tratamento dos erros de conexão
+- [x] Fazer o tratamento dos erros de conexão
 - [ ] Retirar a Key antes de tornar o repositório público
 
 

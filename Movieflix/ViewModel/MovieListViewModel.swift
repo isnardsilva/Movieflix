@@ -27,6 +27,7 @@ class MovieListViewModel {
             self.movies = inputMovies
         }
         
+//        self.moviesAPI = MoviesAPI(networkManager: MovieServiceMock())
         self.moviesAPI = MoviesAPI()
     }
 }

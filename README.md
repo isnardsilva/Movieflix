@@ -38,5 +38,14 @@ Projeto criado com o intuito de aperfeiçoar as habilidades em:
 [The Movie Database (TMDb)](https://www.themoviedb.org) para poder ter acesso aos dados da API
 
 
+### Requisitos
+- [x] Criar a tela de listagem de filmes
+- [x] Criar a tela que exibe os detalhes dos filmes
+- [x] Implementar o Coordinator
+- [x] Implementar View Code
+- [x] Implementar Testes Unitários
+- [ ] Gerar a documentação utilizando o Jezzy
+
+
 ### Créditos
 - Todas as informações exibidas nesse aplicativo são provenientes de uma API disponibilizada pelo site [The Movie Database (TMDb)](https://developers.themoviedb.org/3/getting-started/introduction).

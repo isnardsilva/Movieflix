@@ -21,8 +21,6 @@ class MovieListViewModel {
     
     var lastMovieNameSearched = String()
     
-    
-    
     // MARK: - Initialization
     init(movies: [Movie]? = nil) {
         if let inputMovies = movies {
@@ -32,7 +30,6 @@ class MovieListViewModel {
         self.moviesAPI = MoviesAPI()
     }
 }
-
 
 // MARK: - Network
 extension MovieListViewModel {

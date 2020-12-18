@@ -22,7 +22,6 @@ class NetworkManager: NetworkManagerProtocol {
     // MARK: - Initialization
     private init() { }
     
-    
     // MARK: - Internal Methods
     func get(baseURL: String, parameters: [String: String]?, completionHandler: @escaping (Result<Data, Error>) -> Void) {
         
@@ -43,7 +42,6 @@ class NetworkManager: NetworkManagerProtocol {
                 urlComponents.queryItems?.append(queryItem)
             }
         }
-        
         
         // Check URL
         guard let url = urlComponents.url else {

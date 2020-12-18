@@ -16,7 +16,6 @@ class MovieCell: UICollectionViewCell {
         return imageView
     }()
     
-    
     // MARK: - Properties
     var movieViewModel: MovieViewModel! {
         didSet {
@@ -24,9 +23,7 @@ class MovieCell: UICollectionViewCell {
         }
     }
     
-    
     // MARK: - Initialization
-    
     
     // MARK: Private Methods
     private func setupUI() {
@@ -34,7 +31,6 @@ class MovieCell: UICollectionViewCell {
         setupViews()
     }
 }
-
 
 // MARK: - ViewCodable
 extension MovieCell: ViewCodable {
@@ -47,7 +43,7 @@ extension MovieCell: ViewCodable {
             imageView.topAnchor.constraint(equalTo: self.contentView.topAnchor),
             imageView.leadingAnchor.constraint(equalTo: self.contentView.leadingAnchor),
             imageView.trailingAnchor.constraint(equalTo: self.contentView.trailingAnchor),
-            imageView.bottomAnchor.constraint(equalTo: self.contentView.bottomAnchor),
+            imageView.bottomAnchor.constraint(equalTo: self.contentView.bottomAnchor)
         ])
     }
     

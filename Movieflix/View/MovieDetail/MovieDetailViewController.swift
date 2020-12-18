@@ -16,7 +16,6 @@ class MovieDetailViewController: UIViewController {
     
     weak var coordinator: MainCoordinator?
     
-    
     // MARK: - Initialization
     init(movie: Movie) {
         viewModel = MovieViewModel(movie: movie)
@@ -26,7 +25,6 @@ class MovieDetailViewController: UIViewController {
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
     
     // MARK: - View Life Cycle
     override func loadView() {
@@ -38,7 +36,6 @@ class MovieDetailViewController: UIViewController {
         super.viewDidLoad()
         setupUI()
     }
-    
     
     // MARK: - Private Methods
     private func setupUI() {

@@ -11,7 +11,6 @@ class MovieListViewController: UIViewController {
     // MARK: - Views
     private var baseView = MovieListView()
     
-    
     // MARK: - Properties
     private lazy var viewModel: MovieListViewModel = { [weak self] in
         let viewModel = MovieListViewModel()
@@ -20,7 +19,6 @@ class MovieListViewController: UIViewController {
     }()
     
     weak var coordinator: MainCoordinator?
-    
     
     // MARK: - View Life Cycle
     override func loadView() {
@@ -35,7 +33,6 @@ class MovieListViewController: UIViewController {
         navigationItem.title = "Movieflix"
         navigationItem.hidesSearchBarWhenScrolling = false
         
-        
         // Setup Collection View
         baseView.collectionView.dataSource = self
         baseView.collectionView.delegate = self
@@ -49,7 +46,6 @@ class MovieListViewController: UIViewController {
         // Fetch Movies
         viewModel.fetchTrendingMovies()
     }
-    
     
     // MARK: - Private Methods
     private func showErrorMessage(message: String) {
@@ -71,7 +67,6 @@ class MovieListViewController: UIViewController {
         definesPresentationContext = true
     }
 }
-
 
 // MARK: - MovieListViewModelDelegate
 extension MovieListViewController: MovieListViewModelDelegate {
@@ -115,7 +110,6 @@ extension MovieListViewController: UISearchBarDelegate {
     }
 }
 
-
 // MARK: - UICollectionViewDataSource
 extension MovieListViewController: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
@@ -133,7 +127,6 @@ extension MovieListViewController: UICollectionViewDataSource {
         return cell
     }
 }
-
 
 // MARK: - UICollectionViewDelegateFlowLayout
 extension MovieListViewController: UICollectionViewDelegateFlowLayout {
@@ -153,7 +146,6 @@ extension MovieListViewController: UICollectionViewDelegateFlowLayout {
         return UIEdgeInsets(top: 8, left: 0, bottom: 0, right: 0)
     }
 }
-
 
 // MARK: - UICollectionViewDelegate
 extension MovieListViewController: UICollectionViewDelegate {

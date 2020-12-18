@@ -31,8 +31,6 @@ class MovieDetailView: UIView {
         return label
     }()
     
-    
-    
     // MARK: - Initialization
     init() {
         super.init(frame: .zero)
@@ -43,7 +41,6 @@ class MovieDetailView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
 }
-
 
 // MARK: - ViewCodable
 extension MovieDetailView: ViewCodable {
@@ -64,13 +61,13 @@ extension MovieDetailView: ViewCodable {
         NSLayoutConstraint.activate([
             titleLabel.topAnchor.constraint(equalTo: backdropImageView.bottomAnchor, constant: 20),
             titleLabel.leadingAnchor.constraint(equalTo: self.layoutMarginsGuide.leadingAnchor),
-            titleLabel.trailingAnchor.constraint(equalTo: self.layoutMarginsGuide.trailingAnchor),
+            titleLabel.trailingAnchor.constraint(equalTo: self.layoutMarginsGuide.trailingAnchor)
         ])
         
         NSLayoutConstraint.activate([
             overviewLabel.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 15),
             overviewLabel.leadingAnchor.constraint(equalTo: self.layoutMarginsGuide.leadingAnchor),
-            overviewLabel.trailingAnchor.constraint(equalTo: self.layoutMarginsGuide.trailingAnchor),
+            overviewLabel.trailingAnchor.constraint(equalTo: self.layoutMarginsGuide.trailingAnchor)
         ])
     }
     

@@ -49,7 +49,6 @@ class MovieListView: UIView {
     }
 }
 
-
 // MARK: - ViewCodable
 extension MovieListView: ViewCodable {
     func setupViewHierarchy() {
@@ -63,7 +62,7 @@ extension MovieListView: ViewCodable {
             collectionView.topAnchor.constraint(equalTo: self.layoutMarginsGuide.topAnchor),
             collectionView.leadingAnchor.constraint(equalTo: self.layoutMarginsGuide.leadingAnchor),
             collectionView.trailingAnchor.constraint(equalTo: self.layoutMarginsGuide.trailingAnchor),
-            collectionView.bottomAnchor.constraint(equalTo: self.bottomAnchor),
+            collectionView.bottomAnchor.constraint(equalTo: self.bottomAnchor)
         ])
         
         NSLayoutConstraint.activate([

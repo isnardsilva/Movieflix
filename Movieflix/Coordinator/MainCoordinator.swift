@@ -11,12 +11,10 @@ class MainCoordinator: Coordinator {
     // MARK: - Properties
     var navigationController: UINavigationController
     
-    
     // MARK: - Initialization
     init(navigationController: UINavigationController) {
         self.navigationController = navigationController
     }
-    
     
     // MARK: - Internal Methods
     func start() {

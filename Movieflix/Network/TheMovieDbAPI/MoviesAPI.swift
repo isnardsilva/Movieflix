@@ -11,12 +11,10 @@ class MoviesAPI {
     // MARK: - Properties
     private let networkManager: NetworkManagerProtocol
     
-    
     // MARK: - Initialization
     init(networkManager: NetworkManagerProtocol = NetworkManager.shared) {
         self.networkManager = networkManager
     }
-    
     
     // MARK: - Fetch Methods
     func fetchTrendingMovies(completionHandler: @escaping (Result<[Movie], Error>) -> Void) {

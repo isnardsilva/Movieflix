@@ -9,4 +9,5 @@ target 'Movieflix' do
 
   # Pods for Movieflix
   pod 'Kingfisher', '~> 5.0'
+  pod 'SwiftLint', '0.42.0'
 end

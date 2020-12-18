@@ -12,61 +12,52 @@ class MoviesAPI {
     private let networkManager: NetworkManagerProtocol
     
     // MARK: - Initialization
-    init(networkManager: NetworkManagerProtocol = NetworkManager.shared) {
+    init(networkManager: NetworkManagerProtocol = URLSessionManager()) {
         self.networkManager = networkManager
     }
     
     // MARK: - Fetch Methods
     func fetchTrendingMovies(completionHandler: @escaping (Result<[Movie], Error>) -> Void) {
-        let baseURL = TheMovieDbAPISources.baseURL
-        let trendingMoviesExtensionURL = TheMovieDbAPISources.trendingMoviesExtensionURL
+        // Mount URL
+        var baseURL = TheMovieDbAPISources.baseURL
+        baseURL += TheMovieDbAPISources.trendingMoviesExtensionURL
         
         let parameters: [String: String] = [
             TheMovieDbAPISources.ParameterName.APIKey: TheMovieDbAPISources.APIKey
         ]
         
-        networkManager.get(baseURL: baseURL + trendingMoviesExtensionURL, parameters: parameters, completionHandler: { result in
+        // Run Request
+        networkManager.request(baseURL: baseURL, parameters: parameters, requestType: HTTPMethod.GET, responseType: TheMovieDbAPIResults.self, completionHandler: { result in
             
             switch result {
             case .failure(let error):
                 completionHandler(.failure(error))
-                
-            case .success(let data):
-                do {
-                    let results = try JSONDecoder().decode(TheMovieDbAPIResults.self, from: data)
-                    completionHandler(.success(results.movies))
-                } catch {
-                    completionHandler(.failure(error))
-                }
+            case .success(let receivedResponse):
+                completionHandler(.success(receivedResponse.movies))
             }
-            
         })
     }
     
     func searchMovieByName(search: String, completionHandler: @escaping (Result<[Movie], Error>) -> Void) {
-        let baseURL = TheMovieDbAPISources.baseURL
-        let searchMoviesExtensionURL = TheMovieDbAPISources.searchMoviesExtensionURL
+        
+        // Mount URL
+        var baseURL = TheMovieDbAPISources.baseURL
+        baseURL += TheMovieDbAPISources.searchMoviesExtensionURL
         
         let parameters: [String: String] = [
             TheMovieDbAPISources.ParameterName.query: search,
             TheMovieDbAPISources.ParameterName.APIKey: TheMovieDbAPISources.APIKey
         ]
         
-        networkManager.get(baseURL: baseURL + searchMoviesExtensionURL, parameters: parameters, completionHandler: { result in
+        // Run Request
+        networkManager.request(baseURL: baseURL, parameters: parameters, requestType: HTTPMethod.GET, responseType: TheMovieDbAPIResults.self, completionHandler: { result in
             
             switch result {
             case .failure(let error):
                 completionHandler(.failure(error))
-                
-            case .success(let data):
-                do {
-                    let results = try JSONDecoder().decode(TheMovieDbAPIResults.self, from: data)
-                    completionHandler(.success(results.movies))
-                } catch {
-                    completionHandler(.failure(error))
-                }
+            case .success(let receivedResponse):
+                completionHandler(.success(receivedResponse.movies))
             }
-            
         })
     }
 }

@@ -8,15 +8,34 @@
 import UIKit
 
 class MovieListViewController: UIViewController {
-    // MARK: - Views
+    // MARK: - Properties
     private var baseView = MovieListView()
     
-    // MARK: - Properties
     private lazy var viewModel: MovieListViewModel = { [weak self] in
         let viewModel = MovieListViewModel()
         viewModel.delegate = self
         return viewModel
     }()
+    
+    private var dataSource: MovieListDataSource? {
+        didSet {
+            guard let validDataSource = dataSource else {
+                return
+            }
+            
+            // Setup movie selection
+            validDataSource.didSelectMovie = { [weak self] selectedMovie in
+                self?.didSelectMovie(selectedMovie: selectedMovie)
+            }
+            
+            // Update Collection View
+            DispatchQueue.main.async { [weak self] in
+                self?.baseView.collectionView.dataSource = validDataSource
+                self?.baseView.collectionView.delegate = validDataSource
+                self?.baseView.collectionView.reloadData()
+            }
+        }
+    }
     
     weak var coordinator: MainCoordinator?
     
@@ -32,10 +51,6 @@ class MovieListViewController: UIViewController {
         // Setup Navigation Bar
         navigationItem.title = "Movieflix"
         navigationItem.hidesSearchBarWhenScrolling = false
-        
-        // Setup Collection View
-        baseView.collectionView.dataSource = self
-        baseView.collectionView.delegate = self
         
         // Setup Search Controller
         setupSearchController()
@@ -68,14 +83,22 @@ class MovieListViewController: UIViewController {
     }
 }
 
+// MARK: - Setup Activity Indicator View
+extension MovieListViewController {
+    private func stopLoadingAnimation() {
+        DispatchQueue.main.async { [weak self] in
+            self?.baseView.activityIndicatorView.stopAnimating()
+        }
+    }
+}
+
 // MARK: - MovieListViewModelDelegate
 extension MovieListViewController: MovieListViewModelDelegate {
     
     func didReceiveMovies() {
+        stopLoadingAnimation()
         
         DispatchQueue.main.async { [unowned self] in
-            baseView.activityIndicatorView.stopAnimating()
-            
             if self.viewModel.movies.isEmpty {
                 if let lastMovieNameSearched = baseView.searchController.searchBar.text {
                     self.showErrorMessage(message: "No movies were found with the name \"\(lastMovieNameSearched)\"")
@@ -83,15 +106,14 @@ extension MovieListViewController: MovieListViewModelDelegate {
                     self.showErrorMessage(message: "No movies were found.")
                 }
             } else {
-                DispatchQueue.main.async { [weak self] in
-                    self?.showContent()
-                    self?.baseView.collectionView.reloadData()
-                }
+                self.dataSource = MovieListDataSource(movies: viewModel.movies)
+                self.showContent()
             }
         }
     }
     
     func didReceiveError(error: Error) {
+        stopLoadingAnimation()
         print(error)
         
         DispatchQueue.main.async { [weak self] in
@@ -114,48 +136,9 @@ extension MovieListViewController: UISearchBarDelegate {
     }
 }
 
-// MARK: - UICollectionViewDataSource
-extension MovieListViewController: UICollectionViewDataSource {
-    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return viewModel.movies.count
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: Identifier.Cell.movieCell, for: indexPath) as? MovieCell else {
-            return UICollectionViewCell()
-        }
-        
-        let movieViewModel = MovieViewModel(movie: viewModel.movies[indexPath.row])
-        cell.movieViewModel = movieViewModel
-        
-        return cell
-    }
-}
-
-// MARK: - UICollectionViewDelegateFlowLayout
-extension MovieListViewController: UICollectionViewDelegateFlowLayout {
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        
-        let leftSectionInsets: CGFloat = 5
-        let itemsPerRow: CGFloat = 3
-        
-        let paddingSpace = leftSectionInsets * (itemsPerRow + 1)
-        let availableWidth = collectionView.frame.width - paddingSpace
-        let widthPerItem = availableWidth / itemsPerRow
-        
-        return CGSize(width: widthPerItem, height: widthPerItem + 50)
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
-        return UIEdgeInsets(top: 8, left: 0, bottom: 0, right: 0)
-    }
-}
-
-// MARK: - UICollectionViewDelegate
-extension MovieListViewController: UICollectionViewDelegate {
-    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        let touchedMovie = viewModel.movies[indexPath.row]
-        coordinator?.navigateToMovieDetailViewController(movie: touchedMovie)
-        collectionView.deselectItem(at: indexPath, animated: true)
+// MARK: - Handle Selected Movie
+extension MovieListViewController {
+    private func didSelectMovie(selectedMovie: Movie) {
+        coordinator?.navigateToMovieDetailViewController(movie: selectedMovie)
     }
 }

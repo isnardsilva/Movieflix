@@ -77,7 +77,11 @@ extension MovieListViewController: MovieListViewModelDelegate {
             baseView.activityIndicatorView.stopAnimating()
             
             if self.viewModel.movies.isEmpty {
-                self.showErrorMessage(message: "No movies were found with the name \"\(viewModel.lastMovieNameSearched)\"")
+                if let lastMovieNameSearched = baseView.searchController.searchBar.text {
+                    self.showErrorMessage(message: "No movies were found with the name \"\(lastMovieNameSearched)\"")
+                } else {
+                    self.showErrorMessage(message: "No movies were found.")
+                }
             } else {
                 DispatchQueue.main.async { [weak self] in
                     self?.showContent()

@@ -16,10 +16,7 @@ class MovieListViewModel {
     // MARK: - Properties
     private let moviesAPI: MovieService
     weak var delegate: MovieListViewModelDelegate?
-    
     private(set) var movies: [Movie] = []
-    
-    var lastMovieNameSearched = String()
     
     // MARK: - Initialization
     init(movies: [Movie]? = nil) {
@@ -27,12 +24,11 @@ class MovieListViewModel {
             self.movies = inputMovies
         }
         
-//        self.moviesAPI = MoviesAPI(networkManager: MovieServiceMock())
         self.moviesAPI = MovieService()
     }
 }
 
-// MARK: - Network
+// MARK: - Fetch and Search Methods
 extension MovieListViewModel {
     func fetchTrendingMovies() {
         moviesAPI.fetchTrendingMovies(completionHandler: { [weak self] result in
@@ -41,26 +37,27 @@ extension MovieListViewModel {
                 self?.handleError(error: error)
                 
             case .success(let receivedMovies):
-                self?.handleSucess(with: receivedMovies)
+                self?.handleSuccess(with: receivedMovies)
             }
         })
     }
     
-    func searchMovieByName(_ movieName: String) {
-        self.lastMovieNameSearched = movieName
-        
-        moviesAPI.searchMovieByName(search: movieName, completionHandler: { [weak self] result in
+    func searchMovieByName(_ searchText: String) {
+        moviesAPI.searchMovieByName(search: searchText, completionHandler: { [weak self] result in
             switch result {
             case .failure(let error):
                 self?.handleError(error: error)
                 
             case .success(let receivedMovies):
-                self?.handleSucess(with: receivedMovies)
+                self?.handleSuccess(with: receivedMovies)
             }
         })
     }
-    
-    private func handleSucess(with movies: [Movie]) {
+}
+
+// MARK: - Handle Erros and Success
+extension MovieListViewModel {
+    private func handleSuccess(with movies: [Movie]) {
         self.movies = movies
         delegate?.didReceiveMovies()
     }

@@ -8,7 +8,7 @@
 import XCTest
 @testable import Movieflix
 
-final class URLSessionManagerTests: XCTestCase {
+class URLSessionManagerTests: XCTestCase {
     // MARK: - Properties
     var sut: URLSessionManager!
     

@@ -24,6 +24,8 @@ class MovieListViewController: UIViewController {
     override func loadView() {
         super.loadView()
         self.view = baseView
+        
+        print(DeviceInfo.shared.getLanguage())
     }
 
     override func viewDidLoad() {

@@ -19,6 +19,7 @@ enum TheMovieDbAPISources {
     enum ParameterName {
         static let APIKey = "api_key"
         static let limit = "limit"
+        static let language = "language"
         static let query = "query"
     }
 }

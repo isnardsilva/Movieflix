@@ -18,7 +18,7 @@ class MovieService {
     
     // MARK: - Fetch Methods
     func fetchTrendingMovies(completionHandler: @escaping (Result<[Movie], Error>) -> Void) {
-        let service = MovieServiceTemplate.trendingMovies(limit: 5)
+        let service = MovieServiceInfo.trendingMovies
         
         networkManager.request(service: service, responseType: TheMovieDbAPIResponse.self, completionHandler: { result in
             
@@ -34,7 +34,7 @@ class MovieService {
     }
     
     func searchMovieByName(search: String, completionHandler: @escaping (Result<[Movie], Error>) -> Void) {
-        let service = MovieServiceTemplate.searchMovie(query: search)
+        let service = MovieServiceInfo.searchMovie(query: search)
         
         networkManager.request(service: service, responseType: TheMovieDbAPIResponse.self, completionHandler: { result in
             

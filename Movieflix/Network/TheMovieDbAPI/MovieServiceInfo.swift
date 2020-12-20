@@ -1,5 +1,5 @@
 //
-//  MovieServiceTemplate.swift
+//  MovieServiceInfo.swift
 //  Movieflix
 //
 //  Created by Isnard Silva on 20/12/20.
@@ -7,13 +7,13 @@
 
 import Foundation
 
-enum MovieServiceTemplate {
-    case trendingMovies(limit: Int)
+enum MovieServiceInfo {
+    case trendingMovies
     case searchMovie(query: String)
 }
 
 // MARK: - ServiceProtocol
-extension MovieServiceTemplate: ServiceProtocol {
+extension MovieServiceInfo: ServiceProtocol {
     var path: String {
         switch self {
         case .trendingMovies:
@@ -34,14 +34,15 @@ extension MovieServiceTemplate: ServiceProtocol {
     
     var parameters: [String: Any]? {
         switch self {
-        case .trendingMovies(let limit):
-            return [
-                TheMovieDbAPISources.ParameterName.limit: limit,
-                TheMovieDbAPISources.ParameterName.APIKey: TheMovieDbAPISources.APIKey
-            ]
-        case .searchMovie(query: let query):
+        case .trendingMovies:
             return [
                 TheMovieDbAPISources.ParameterName.APIKey: TheMovieDbAPISources.APIKey,
+                TheMovieDbAPISources.ParameterName.language: DeviceInfo.shared.getLanguage()
+            ]
+        case .searchMovie(let query):
+            return [
+                TheMovieDbAPISources.ParameterName.APIKey: TheMovieDbAPISources.APIKey,
+                TheMovieDbAPISources.ParameterName.language: DeviceInfo.shared.getLanguage(),
                 TheMovieDbAPISources.ParameterName.query: query
             ]
         }

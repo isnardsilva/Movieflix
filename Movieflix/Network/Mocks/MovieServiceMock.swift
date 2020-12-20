@@ -7,7 +7,7 @@
 
 import Foundation
 
-class MovieServiceMock: NetworkManagerProtocol {
+class MovieServiceMock {
     
     func request<T: Decodable>(baseURL: String, parameters: [String: String]?, requestType: HTTPMethod, responseType: T.Type, completionHandler: (Result<T, Error>) -> Void) {
         

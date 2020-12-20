@@ -1,5 +1,5 @@
 //
-//  MoviesAPI.swift
+//  MovieService.swift
 //  Movieflix
 //
 //  Created by Isnard Silva on 09/11/20.
@@ -7,7 +7,7 @@
 
 import Foundation
 
-class MoviesAPI {
+class MovieService {
     // MARK: - Properties
     private let networkManager: NetworkManagerProtocol
     
@@ -18,43 +18,30 @@ class MoviesAPI {
     
     // MARK: - Fetch Methods
     func fetchTrendingMovies(completionHandler: @escaping (Result<[Movie], Error>) -> Void) {
-        // Mount URL
-        var baseURL = TheMovieDbAPISources.baseURL
-        baseURL += TheMovieDbAPISources.trendingMoviesExtensionURL
+        let service = MovieServiceTemplate.trendingMovies(limit: 5)
         
-        let parameters: [String: String] = [
-            TheMovieDbAPISources.ParameterName.APIKey: TheMovieDbAPISources.APIKey
-        ]
-        
-        // Run Request
-        networkManager.request(baseURL: baseURL, parameters: parameters, requestType: HTTPMethod.GET, responseType: TheMovieDbAPIResults.self, completionHandler: { result in
+        networkManager.request(service: service, responseType: TheMovieDbAPIResponse.self, completionHandler: { result in
             
             switch result {
             case .failure(let error):
                 completionHandler(.failure(error))
+                
             case .success(let receivedResponse):
                 completionHandler(.success(receivedResponse.movies))
             }
         })
+        
     }
     
     func searchMovieByName(search: String, completionHandler: @escaping (Result<[Movie], Error>) -> Void) {
+        let service = MovieServiceTemplate.searchMovie(query: search)
         
-        // Mount URL
-        var baseURL = TheMovieDbAPISources.baseURL
-        baseURL += TheMovieDbAPISources.searchMoviesExtensionURL
-        
-        let parameters: [String: String] = [
-            TheMovieDbAPISources.ParameterName.query: search,
-            TheMovieDbAPISources.ParameterName.APIKey: TheMovieDbAPISources.APIKey
-        ]
-        
-        // Run Request
-        networkManager.request(baseURL: baseURL, parameters: parameters, requestType: HTTPMethod.GET, responseType: TheMovieDbAPIResults.self, completionHandler: { result in
+        networkManager.request(service: service, responseType: TheMovieDbAPIResponse.self, completionHandler: { result in
             
             switch result {
             case .failure(let error):
                 completionHandler(.failure(error))
+                
             case .success(let receivedResponse):
                 completionHandler(.success(receivedResponse.movies))
             }

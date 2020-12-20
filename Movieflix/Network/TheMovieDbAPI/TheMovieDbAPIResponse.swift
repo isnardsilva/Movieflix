@@ -1,5 +1,5 @@
 //
-//  APIResults.swift
+//  TheMovieDbAPIResponse.swift
 //  Movieflix
 //
 //  Created by Isnard Silva on 07/11/20.
@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct TheMovieDbAPIResults: Codable {
+struct TheMovieDbAPIResponse: Codable {
     let page: Int
     let movies: [Movie]
     

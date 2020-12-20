@@ -14,7 +14,7 @@ protocol MovieListViewModelDelegate: class {
 
 class MovieListViewModel {
     // MARK: - Properties
-    private let moviesAPI: MoviesAPI
+    private let moviesAPI: MovieService
     weak var delegate: MovieListViewModelDelegate?
     
     private(set) var movies: [Movie] = []
@@ -28,7 +28,7 @@ class MovieListViewModel {
         }
         
 //        self.moviesAPI = MoviesAPI(networkManager: MovieServiceMock())
-        self.moviesAPI = MoviesAPI()
+        self.moviesAPI = MovieService()
     }
 }
 

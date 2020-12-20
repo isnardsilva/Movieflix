@@ -1,5 +1,5 @@
 //
-//  UIImage+SetImage.swift
+//  UIImageView+SetImage.swift
 //  Movieflix
 //
 //  Created by Isnard Silva on 09/11/20.

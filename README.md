@@ -44,7 +44,6 @@ Projeto criado com o intuito de aperfeiçoar as habilidades em:
 - [x] Implementar o Coordinator
 - [x] Implementar View Code
 - [x] Implementar Testes Unitários
-- [ ] Gerar a documentação utilizando o Jezzy
 
 
 ### Créditos

@@ -22,17 +22,28 @@ class MovieListViewController: UIViewController {
             guard let validDataSource = dataSource else {
                 return
             }
-            
+
             // Setup movie selection
             validDataSource.didSelectMovie = { [weak self] selectedMovie in
                 self?.didSelectMovie(selectedMovie: selectedMovie)
             }
             
+            // Setup pagination handle
+            validDataSource.didEndOfCollectionView = { [weak self] in
+                self?.didEndOfCollectionView()
+            }
+
             // Update Collection View
             DispatchQueue.main.async { [weak self] in
                 self?.baseView.collectionView.dataSource = validDataSource
                 self?.baseView.collectionView.delegate = validDataSource
                 self?.baseView.collectionView.reloadData()
+                
+                let isPaginationMode = self?.viewModel.isPaginationMode ?? false
+                
+                if !isPaginationMode {
+                    self?.baseView.collectionView.scrollToItem(at: IndexPath(row: 0, section: 0), at: .top, animated: true)
+                }
             }
         }
     }
@@ -77,7 +88,7 @@ class MovieListViewController: UIViewController {
     func setupSearchController() {
         baseView.searchController.searchBar.delegate = self
         baseView.searchController.obscuresBackgroundDuringPresentation = false
-        baseView.searchController.searchBar.placeholder = "Search Movies"
+        baseView.searchController.searchBar.placeholder = "Search Movie"
         navigationItem.searchController = baseView.searchController
         definesPresentationContext = true
     }
@@ -134,11 +145,26 @@ extension MovieListViewController: UISearchBarDelegate {
         
         viewModel.searchMovieByName(movieName)
     }
+    
+    func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
+        if let searchText = searchBar.text, !searchText.isEmpty {
+            viewModel.fetchTrendingMovies()
+        }
+    }
 }
 
-// MARK: - Handle Selected Movie
+// MARK: - Hadle Movie Selection
 extension MovieListViewController {
     private func didSelectMovie(selectedMovie: Movie) {
         coordinator?.navigateToMovieDetailViewController(movie: selectedMovie)
+    }
+}
+
+// MARK: - Hadle Pagination
+extension MovieListViewController {
+    private func didEndOfCollectionView() {
+        if !baseView.searchController.isActive {
+            self.viewModel.fetchTrendingMovies(pagination: true)
+        }
     }
 }

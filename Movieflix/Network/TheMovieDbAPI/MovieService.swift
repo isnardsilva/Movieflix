@@ -17,8 +17,8 @@ class MovieService {
     }
     
     // MARK: - Fetch Methods
-    func fetchTrendingMovies(completionHandler: @escaping (Result<[Movie], Error>) -> Void) {
-        let service = MovieServiceInfo.trendingMovies
+    func fetchTrendingMovies(page: Int, completionHandler: @escaping (Result<[Movie], Error>) -> Void) {
+        let service = MovieServiceInfo.trendingMovies(page: page)
         
         networkManager.request(service: service, responseType: TheMovieDbAPIResponse.self, completionHandler: { result in
             

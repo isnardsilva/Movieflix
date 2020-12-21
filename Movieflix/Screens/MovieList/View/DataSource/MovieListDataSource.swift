@@ -12,6 +12,7 @@ class MovieListDataSource: NSObject, UICollectionViewDataSource {
     private var movies: [Movie]
     
     var didSelectMovie: ((Movie) -> Void)?
+    var didEndOfCollectionView: (() -> Void)?
     
     // MARK: - Initialization
     init(movies: [Movie]) {
@@ -63,5 +64,13 @@ extension MovieListDataSource: UICollectionViewDelegate {
         
         let selectedMovie = movies[indexPath.row]
         self.didSelectMovie?(selectedMovie)
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
+        
+        // Detect last cell
+        if indexPath.row == (movies.count - 1) {
+            self.didEndOfCollectionView?()
+        }
     }
 }

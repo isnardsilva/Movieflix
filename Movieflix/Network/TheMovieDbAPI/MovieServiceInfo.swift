@@ -8,7 +8,7 @@
 import Foundation
 
 enum MovieServiceInfo {
-    case trendingMovies
+    case trendingMovies(page: Int)
     case searchMovie(query: String)
 }
 
@@ -34,10 +34,11 @@ extension MovieServiceInfo: ServiceProtocol {
     
     var parameters: [String: Any]? {
         switch self {
-        case .trendingMovies:
+        case .trendingMovies(let page):
             return [
                 TheMovieDbAPISources.ParameterName.APIKey: TheMovieDbAPISources.APIKey,
-                TheMovieDbAPISources.ParameterName.language: DeviceInfo.shared.getLanguage()
+                TheMovieDbAPISources.ParameterName.language: DeviceInfo.shared.getLanguage(),
+                TheMovieDbAPISources.ParameterName.page: page
             ]
         case .searchMovie(let query):
             return [

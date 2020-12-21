@@ -18,6 +18,10 @@ class MovieListViewModel {
     weak var delegate: MovieListViewModelDelegate?
     private(set) var movies: [Movie] = []
     
+    private var currentPage = 0
+//    private var pagingEnable = false
+    var isPaginationMode = false
+    
     // MARK: - Initialization
     init(movies: [Movie]? = nil) {
         if let inputMovies = movies {
@@ -30,8 +34,16 @@ class MovieListViewModel {
 
 // MARK: - Fetch and Search Methods
 extension MovieListViewModel {
-    func fetchTrendingMovies() {
-        moviesAPI.fetchTrendingMovies(completionHandler: { [weak self] result in
+    func fetchTrendingMovies(pagination: Bool = false) {
+        self.isPaginationMode = pagination
+        
+        if isPaginationMode {
+            currentPage += 1
+        } else {
+            currentPage = 1
+        }
+        
+        moviesAPI.fetchTrendingMovies(page: currentPage, completionHandler: { [weak self] result in
             switch result {
             case .failure(let error):
                 self?.handleError(error: error)
@@ -43,6 +55,8 @@ extension MovieListViewModel {
     }
     
     func searchMovieByName(_ searchText: String) {
+        self.isPaginationMode = false
+        
         moviesAPI.searchMovieByName(search: searchText, completionHandler: { [weak self] result in
             switch result {
             case .failure(let error):
@@ -58,7 +72,11 @@ extension MovieListViewModel {
 // MARK: - Handle Erros and Success
 extension MovieListViewModel {
     private func handleSuccess(with movies: [Movie]) {
-        self.movies = movies
+        if isPaginationMode {
+            self.movies.append(contentsOf: movies)
+        } else {
+            self.movies = movies
+        }
         delegate?.didReceiveMovies()
     }
     
